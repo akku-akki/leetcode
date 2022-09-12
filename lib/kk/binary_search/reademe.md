@@ -2,7 +2,7 @@
 Binary Search
 
 *points
-1. Sorted Array [Aces,Dec]
+1. Sorted Array [Ascending,Descending]
 
 👌Tips
 
