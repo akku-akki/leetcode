@@ -8,7 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/two_pointer/triplet_sum_to_zero.dart"
+            "program": "E:/leetcode/lib/kk/linked_list/reverse_linked_list.dart"
 
         }
     ]
