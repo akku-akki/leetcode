@@ -4,15 +4,21 @@ void main() {
   print(Solution().isValidBST(root2));
 }
 
-
 class Solution {
-  bool isValidBST(TreeNode? root) => _isValidBST(root, -999999, 999999);
+  bool isValidBST(TreeNode? root) {
+    return _isValidBST(
+      root,
+      -9999999999999,
+      9999999999999,
+    );
+  }
 
-  bool _isValidBST(TreeNode? root, int min, int max) {
+  bool _isValidBST(TreeNode? root, int? min, int? max) {
     if (root == null) return true;
-    if (root.val < min || root.val > max) return false;
-    return _isValidBST(root.left, min, root.val - 1) &&
-        _isValidBST(root.right, root.val + 1, max);
+    if ((max != null && root.val >= max) || (min != null && root.val <= min))
+      return false;
+    return _isValidBST(root.left, min, root.val) &&
+        _isValidBST(root.right, root.val, max);
   }
 }
 
