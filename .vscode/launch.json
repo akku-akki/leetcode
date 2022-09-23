@@ -8,8 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/subset/subsets.dart"
-
+            "program": "E:/leetcode/lib/subset/permutation/letter_case_permutations.dart"
         }
     ]
 }

@@ -1,34 +1,39 @@
 void main() {
-  // print(Solution().permute([1, 2, 3]));
-  Solution().permute([1, 1, 3]);
+  print(Solution().permuteInternal([1, 1, 2]));
 }
 
 class Solution {
-  List<List<int>> permute(List<int> nums) {
+  List<List<int>> permuteUnique(List<int> nums) {
+    nums.sort();
+    return permuteInternal(nums);
+  }
+
+  List<List<int>> permuteInternal(List<int> nums) {
     if (nums.length == 0) return [[]];
-    print('List Length ${nums.length} => $nums');
     final first = nums[0];
     final rest = nums.sublist(1, nums.length);
-    print('FIRST => $first  ==> SECOND $rest');
-    final permutationsWithoutFirst = permute(rest);
+    final permutationsWithoutFirst = permuteInternal(rest);
     final List<List<int>> allPermutations = [];
-    print('Empty RECURSION STACK > GOT => $permutationsWithoutFirst \n');
+    if (permutationsWithoutFirst.isEmpty) return allPermutations;
     permutationsWithoutFirst.forEach(
       (element) {
-        print('element $element');
+        int previousElement = -999999999;
         for (int i = 0; i <= element.length; i++) {
+          if (i > 0 && previousElement == element[i]) {
+            continue;
+          }
+          if (i > 0) {
+            previousElement = element[i];
+          }
           final permuteWithFirst = [
             ...element.sublist(0, i),
             first,
             ...element.sublist(i)
           ];
-          print('PERMUTE WITH FIRST => $permuteWithFirst');
           allPermutations.add(permuteWithFirst);
-          print('ALL PER => $allPermutations');
         }
       },
     );
-
     return allPermutations;
   }
 }
