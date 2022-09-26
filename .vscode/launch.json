@@ -8,7 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/subset/permutation/letter_case_permutations.dart"
+            "program": "E:/leetcode/lib/topological_sort/course_schedule.dart"
         }
     ]
 }
