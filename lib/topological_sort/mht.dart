@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 void main() {
   print(
     Solution().findMinHeightTrees(
@@ -12,57 +14,49 @@ void main() {
     ),
   );
 }
+import 'dart:collection';
 
 class Solution {
   List<int> findMinHeightTrees(int n, List<List<int>> edges) {
-    Set<int> all = {};
-    for (int i = 0; i < n; i++) {
-      all.add(i);
-    }
-    Set<int> visiting = {};
-    Set<int> visited = {};
-
+    Map<int, int> degree = {};
+    DoubleLinkedQueue queue = DoubleLinkedQueue();
     final List<List<int>> graph = List.generate(
       n,
       (index) => [],
     );
-    print(graph);
     for (int i = 0; i < edges.length; i++) {
       final list = edges[i];
       graph[list[0]].add(list[1]);
       graph[list[1]].add(list[0]);
+      degree.update(list[0], (value) => ++value, ifAbsent: (() => 1));
+      degree.update(list[1], (value) => ++value, ifAbsent: (() => 1));
     }
-    print(graph);
-    
-    while (all.isNotEmpty) {
-      int current = all.first;
-      if (hasCycle(current, all, visiting, visited, graph)) {
-        return [];
+
+    degree.forEach((key, value) {
+      if (value == 1) {
+        queue.addFirst(key);
+      }
+    });
+
+    final List<int> ans = [];
+
+    while (queue.isNotEmpty) {
+      final size = queue.length;
+      print(queue);
+      ans.clear();
+      for (int i = 0; i < size; i++) {
+        int current = queue.removeFirst();
+        ans.add(current);
+        print(graph[current]);
+        for (int child in graph[current]) {
+          degree.update(child, (value) => --value);
+          if (degree[child]! == 1) {
+            queue.addLast(child);
+          }
+        }
       }
     }
-    return [];
+    if (n == 1) ans.add(0);
+    return ans;
   }
-}
-
-bool hasCycle(
-  int node,
-  Set<int> all,
-  Set<int> visiting,
-  Set<int> visited,
-  List<List<int>> edges,
-) {
-  all.remove(node);
-  visiting.add(node);
-  final List<int> nodes = node < edges.length ? edges[node] : [];
-  for (final currentNode in nodes) {
-    if (visited.contains(currentNode)) continue;
-    if (visiting.contains(currentNode)) return true;
-    final result = hasCycle(currentNode, all, visiting, visited, edges);
-    if (result) {
-      return true;
-    }
-  }
-  visiting.remove(node);
-  visited.add(node);
-  return false;
 }
