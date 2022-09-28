@@ -8,7 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/dp/unique_paths_2.dart"
+            "program": "E:/leetcode/lib/backtracking/binary_tree_paths.dart"
         }
     ]
 }
