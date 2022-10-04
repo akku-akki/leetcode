@@ -88,3 +88,5 @@ Only works if sort first
 In loop traverse, compare curr with stored elm in arr or prev. When ciolating condition, continue as this would be addressed in other time.
 # swap
 Use in permutation where same elms with different sequence are considered different. In loop traverse, rather than pushing [j] dicrectly, swap i with j and push i. Restore the swap after backtracking. By doing so, target array continues to push elm with different sequence.
+
+# Look template
