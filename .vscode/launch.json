@@ -8,7 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/prefix_sum/find_pivot_index.dart"
+            "program": "E:/leetcode/lib/two_pointer/backspace_string_compare.dart"
         }
     ]
 }
