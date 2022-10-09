@@ -24,8 +24,8 @@ class Solution {
   ListNode? removeNthFromEnd(ListNode? head, int n) {
     ListNode? dummy = ListNode(0);
     dummy.next = head;
-    ListNode? start = dummy;
-    ListNode? end = dummy;
+    ListNode? start = head;
+    ListNode? end = head;
     for (int i = 0; i <= n; i++) {
       end = end?.next;
     }
@@ -34,6 +34,6 @@ class Solution {
       start = start!.next;
     }
     start?.next = start.next?.next;
-    return dummy.next;
+    return head;
   }
 }

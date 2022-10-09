@@ -9,7 +9,11 @@ Linked_List
 
 👌Tips
 
-🟩 
+🟩 Some problem might be solved by taking a Dummy LinkedLIst which has first node = 0 and next points to actual LL
+  <!-- ListNode? dummy = ListNode(0);  <== EXAMPLE
+    dummy.next = head; -->
+
+
 
 
 💡Hint
