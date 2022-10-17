@@ -8,7 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/bfs/cousins_in_binary_tree.dart"
+            "program": "E:/leetcode/lib/algo/kruskals_algorithm.dart"
         }
     ]
 }
