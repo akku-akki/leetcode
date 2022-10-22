@@ -1,171 +1,96 @@
+void main() {
+  Heap heap = Heap();
+  heap.insert(8);
+  heap.insert(7);
+  heap.insert(6);
+  heap.insert(5);
+  heap.insert(4);
+  heap.insert(3);
+  heap.insert(2);
+  heap.insert(1);
+  print(heap);
+  print(heap.size);
+  print('Removing Start');
+  print(heap.remove());
+  print('Removing End');
+  print(heap);
+  print(heap.size);
+}
 
+class Heap {
+  List item = List.generate(10, (index) => null);
+  int size = 0;
 
-class HeapPriorityQueue<E> {
-  static const int _initialCapacity = 7;
-  final Comparator<E> comparison;
-  List<E?> _queue = List<E?>.filled(_initialCapacity, null);
-  int _length = 0;
-  HeapPriorityQueue(int Function(E, E) comparison) : comparison = comparison;
-
-  E _elementAt(int index) => _queue[index] ?? (null as E);
-
-  void add(E element) {
-    _add(element);
+  void insert(int value) {
+    if (_isFull()) throw 'THIS IS FULL';
+    item[size] = value;
+    size++;
+    _bubbleUp();
   }
 
-  void addAll(Iterable<E> elements) {
-    for (var element in elements) {
-      _add(element);
+  void _bubbleUp() {
+    int index = size - 1;
+    while (index > 0 && item[index] > item[_parent(index)]) {
+      _swap(index, _parent(index));
+      index = _parent(index);
     }
   }
 
-  void clear() {
-    _queue = const [];
-    _length = 0;
+  bool _isFull() => size == item.length;
+
+  int _parent(int index) => (index - 1) ~/ 2;
+  void _swap(int index1, int index2) {
+    final temp = item[index1];
+    item[index1] = item[index2];
+    item[index2] = temp;
   }
 
-  bool contains(E object) => _locate(object) >= 0;
-
-  E get first {
-    if (_length == 0) throw StateError('No element');
-    return _elementAt(0);
+  int remove() {
+    if (isEmpty()) throw 'Empty State';
+    int root = item[0];
+    item[0] = item[size - 1];
+    size--;
+    _bubbleDown();
+    return root;
   }
 
-  bool get isEmpty => _length == 0;
-
-  bool get isNotEmpty => _length != 0;
-
-  int get length => _length;
-
-  bool remove(E element) {
-    var index = _locate(element);
-    if (index < 0) return false;
-    var last = _removeLast();
-    if (index < _length) {
-      var comp = comparison(last, element);
-      if (comp <= 0) {
-        _bubbleUp(last, index);
-      } else {
-        _bubbleDown(last, index);
-      }
+  void _bubbleDown() {
+    int index = 0;
+    while (index <= size && !_isValidParent(index)) {
+      int largerChildIndex = _largerChildIndex(index);
+      _swap(index, largerChildIndex);
+      index = largerChildIndex;
     }
-    return true;
   }
 
-  Iterable<E> removeAll() {
-    var result = _queue;
-    var length = _length;
-    _queue = const [];
-    _length = 0;
-    return result.take(length).cast();
-  }
+  bool isEmpty() => size == 0;
 
-  E removeFirst() {
-    if (_length == 0) throw StateError('No element');
-    var result = _elementAt(0);
-    var last = _removeLast();
-    if (_length > 0) {
-      _bubbleDown(last, 0);
+  bool _isValidParent(int index) {
+    if (!_hasLeftChild(index)) return true;
+    bool isValid = item[index] >= _leftChild(index);
+    if (_hasRightChild(index)) {
+      isValid = isValid && item[index] >= _rightChild(index);
     }
-    return result;
+    return isValid;
   }
+
+  int _largerChildIndex(int index) {
+    if (!_hasLeftChild(index)) return index;
+    if (!_hasRightChild(index)) return _leftChildIndex(index);
+    return (_leftChild(index) > _rightChild(index))
+        ? _leftChildIndex(index)
+        : _rightChildIndex(index);
+  }
+
+  int _leftChildIndex(int index) => index * 2 + 1;
+  int _rightChildIndex(int index) => index * 2 + 2;
+  int _leftChild(index) => item[_leftChildIndex(index)];
+  int _rightChild(index) => item[_rightChildIndex(index)];
+  bool _hasLeftChild(int index) => _leftChildIndex(index) < size;
+  bool _hasRightChild(int index) => _rightChildIndex(index) < size;
 
   @override
   String toString() {
-    return _queue.take(_length).toString();
-  }
-
-  void _add(E element) {
-    if (_length == _queue.length) _grow();
-    _bubbleUp(element, _length++);
-  }
-
-  int _locate(E object) {
-    if (_length == 0) return -1;
-    var position = 1;
-    do {
-      var index = position - 1;
-      var element = _elementAt(index);
-      var comp = comparison(element, object);
-      if (comp <= 0) {
-        if (comp == 0 && element == object) return index;
-        var leftChildPosition = position * 2;
-        if (leftChildPosition <= _length) {
-          position = leftChildPosition;
-          continue;
-        }
-      }
-      do {
-        while (position.isOdd) {
-          position >>= 1;
-        }
-        position += 1;
-      } while (position > _length);
-    } while (position != 1);
-    return -1;
-  }
-
-  E _removeLast() {
-    var newLength = _length - 1;
-    var last = _elementAt(newLength);
-    _queue[newLength] = null;
-    _length = newLength;
-    return last;
-  }
-
-  void _bubbleUp(E element, int index) {
-    while (index > 0) {
-      var parentIndex = (index - 1) ~/ 2;
-      var parent = _elementAt(parentIndex);
-      if (comparison(element, parent) > 0) break;
-      _queue[index] = parent;
-      index = parentIndex;
-    }
-    _queue[index] = element;
-  }
-
-  void _bubbleDown(E element, int index) {
-    var rightChildIndex = index * 2 + 2;
-    while (rightChildIndex < _length) {
-      var leftChildIndex = rightChildIndex - 1;
-      var leftChild = _elementAt(leftChildIndex);
-      var rightChild = _elementAt(rightChildIndex);
-      var comp = comparison(leftChild, rightChild);
-      int minChildIndex;
-      E minChild;
-      if (comp < 0) {
-        minChild = leftChild;
-        minChildIndex = leftChildIndex;
-      } else {
-        minChild = rightChild;
-        minChildIndex = rightChildIndex;
-      }
-      comp = comparison(element, minChild);
-      if (comp <= 0) {
-        _queue[index] = element;
-        return;
-      }
-      _queue[index] = minChild;
-      index = minChildIndex;
-      rightChildIndex = index * 2 + 2;
-    }
-    var leftChildIndex = rightChildIndex - 1;
-    if (leftChildIndex < _length) {
-      var child = _elementAt(leftChildIndex);
-      var comp = comparison(element, child);
-      if (comp > 0) {
-        _queue[index] = child;
-        index = leftChildIndex;
-      }
-    }
-    _queue[index] = element;
-  }
-
-  void _grow() {
-    var newCapacity = _queue.length * 2 + 1;
-    if (newCapacity < _initialCapacity) newCapacity = _initialCapacity;
-    var newQueue = List<E?>.filled(newCapacity, null);
-    newQueue.setRange(0, _length, _queue);
-    _queue = newQueue;
+    return item.toString();
   }
 }
