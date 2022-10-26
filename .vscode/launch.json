@@ -8,7 +8,7 @@
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "E:/leetcode/lib/trie/trie.dart"
+            "program": "E:/leetcode/lib/sliding_window/minimum_window_substring.dart"
         }
     ]
 }
