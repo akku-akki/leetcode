@@ -1,55 +1,57 @@
 void main() {
   ListNode list =
       ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5)))));
+  reorderList(list);
+  ListNode? node = list;
+  while (node != null) {
+    print(node.val);
+    node = node.next;
+  }
 }
 
 void reorderList(ListNode? head) {
-  if (head == null || head.next == null) {
-    return;
-  }
-  ListNode? mid = getMid(head);
-  ListNode? hs = reverseList(mid);
-  ListNode? hf = head;
+  if (head == null || head.next == null) return;
+  ListNode? first = head;
+  ListNode? slow = head;
+  ListNode? fast = head;
+  ListNode? prev = null;
 
-  while (hf != null && hs != null) {
-    ListNode? temp = hf.next;
-    hf.next = hs;
-    hf = temp;
-    temp = hs.next;
-    hs.next = hf;
-    hs = temp;
+  while (fast != null && fast.next != null) {
+    prev = slow;
+    slow = slow!.next;
+    fast = fast.next?.next;
   }
-  if (hf != null) {
-    hf.next = null;
-  }
-}
+  prev?.next = null;
 
-ListNode? getMid(ListNode? head) {
-  ListNode? midPrev = null;
-  while (head != null && head.next != null) {
-    midPrev = (midPrev == null) ? head : midPrev.next;
-    head = head.next?.next;
-  }
-  ListNode? mid = midPrev?.next;
-  midPrev?.next = null;
-  return mid;
+  ListNode? l2 = reverseList(slow);
+  merge(first, l2);
 }
 
 ListNode? reverseList(ListNode? head) {
   ListNode? prev = null;
-  ListNode? present = head;
-  ListNode? next = present?.next;
+  ListNode? current = head;
 
-  while (present != null) {
-    present.next = prev;
-    prev = present;
-    present = next;
-    if (next != null) {
-      next = next.next;
-    }
+  while (current != null) {
+    ListNode? next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
   }
-
   return prev;
+}
+
+void merge(ListNode? l1, ListNode? l2) {
+  while (l1 != null) {
+    ListNode? nextL1 = l1.next;
+    ListNode? nextL2 = l2?.next;
+    l1.next = l2;
+    if (nextL1 == null) {
+      break;
+    }
+    l2?.next = nextL1;
+    l1 = nextL1;
+    l2 = nextL2;
+  }
 }
 
 class ListNode {
