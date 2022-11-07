@@ -1,17 +1,24 @@
 void main() {
-  print(Solution().plusOne([1, 2, 3]));
+  print(Solution().isPalindrome(-12121));
 }
 
 class Solution {
-  List<int> plusOne(List<int> digits) {
-    for (int i = digits.length - 1; i >= 0; i--) {
-      if (digits[i] == 9) {
-        digits[i] = 0;
-      } else {
-        digits[i]++;
-        return digits;
-      }
+  bool isPalindrome(int x) {
+    int originalNum = x;
+    int temp = x;
+    int length = 0;
+    int newNum = 0;
+    if (length == 1) return true;
+    while (temp > 0) {
+      length++;
+      temp = temp ~/ 10;
     }
-    return [1, ...digits];
+    while (length >= 0) {
+      int last = (x % 10);
+      newNum = (newNum * (length > 0 ? 10 : 1)) + last;
+      x = x ~/ 10;
+      length--;
+    }
+    return originalNum == newNum;
   }
 }
