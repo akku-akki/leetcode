@@ -1,9 +1,12 @@
 //LC 30
 void main() {
-  print(Solution().findSubstring('barfoothefoobarman', ["foo", "bar"]));
+  print(
+    Solution().findSubstring(
+      'wordgoodgoodgoodbestword',
+      ["word", "good", "best", "good"],
+    ),
+  );
 }
-//{ foo : 1,
-//  bar : 1, }
 
 class Solution {
   List<int> findSubstring(String s, List<String> words) {
@@ -25,8 +28,7 @@ class Solution {
           if (count == 1)
             copyMap.remove(str);
           else
-            copyMap.putIfAbsent(str, () => (count - 1));
-
+            copyMap[str] = count - 1;
           if (copyMap.isEmpty) {
             ans.add(i);
             break;
@@ -41,7 +43,11 @@ class Solution {
 
   void setMap(Map<String, int> lookUp, List<String> words) {
     words.forEach((element) {
-      lookUp.addAll({element: 1});
+      if (lookUp.containsKey(element)) {
+        lookUp[element] = lookUp[element]! + 1;
+      } else {
+        lookUp.addAll({element: 1});
+      }
     });
   }
 }
