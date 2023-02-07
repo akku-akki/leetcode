@@ -12,7 +12,7 @@ to find range sum on n size array.
 for(int i = 1; i < n ; i++){
     A[i] = A[i] + A[i - 1];
 } -->
-
+ 
 
 👌Tips
 
@@ -24,7 +24,8 @@ for(int i = 1; i < n ; i++){
 🟩 
 
 🗝️Takeaway
-🟩 range sum query formula A[i,j] = A[j] - A[i -1].
+🟩 range sum query formula A[i,j] = A[j] - A[i -1]. 
+    where i and j are the start and end index (eg. range(2,6) i=2 and j = 6). 
 🟩 it takes O(n) time to calculate prefix sum array of N size array.
 🟩 it takes O(1) time to perform range sum query on N size array.
 
